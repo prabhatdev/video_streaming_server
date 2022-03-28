@@ -6,15 +6,17 @@ app.get("/", function (req, res) {
     res.sendFile(__dirname + "/index.html");
 });
 
-app.get("/video", function (req, res) {
+app.get("/video/:path", function (req, res) {
     // Ensure there is a range given for the video
     const range = req.headers.range;
+    const path=req.params.path;
+    console.log(path);
     if (!range) {
         res.status(400).send("Requires Range header");
     }
 
-    const videoPath = "Chris-Do.mp4";
-    const videoSize = fs.statSync("Chris-Do.mp4").size;
+    const videoPath = "/Users/prabhatsingh/Downloads/movies/"+path;
+    const videoSize = fs.statSync(videoPath).size;
 
     const CHUNK_SIZE = 10 ** 6; // 1MB
     const start = Number(range.replace(/\D/g, ""));
